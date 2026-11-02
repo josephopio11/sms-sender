@@ -3,11 +3,34 @@
 
 export async function sendSms(number: string, text: string) {
   try {
-    const response = await fetch("http://127.0.0.1:9292/sms/", {
+    const SERVER_IP = process.env.OPENSMS_SERVER_ADDRESS
+    const SERVER_PORT = process.env.OPENSMS_SERVER_PORT
+    const API_KEY = process.env.OPENSMS_API_KEY
+
+    console.log("The SMS server IP is",SERVER_IP)
+    console.log("The SMS server PORT is",SERVER_PORT)
+    console.log("The API KEY is",API_KEY)
+
+    if (!SERVER_IP||!SERVER_PORT){
+      return {
+      success: false,
+      error:  "Please check your OPENSMS server IP or PORT",
+    };
+    }
+
+if (!API_KEY){
+      return {
+      success: false,
+      error:  "Please check your OPENSMS API KEY",
+    };
+    }
+
+    console.log("response entering")
+    const response = await fetch(`http://${SERVER_IP}:${SERVER_PORT}/sms/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.OPENSMS_API_KEY}`,
+        Authorization: `Bearer ${API_KEY}`,
       },
       body: JSON.stringify({
         number,
@@ -15,8 +38,10 @@ export async function sendSms(number: string, text: string) {
       }),
       cache: "no-store",
     });
+    console.log("something happening here")
 
     const data = await response.json().catch(() => null);
+    console.table(data)
 
     if (!response.ok) {
       return {

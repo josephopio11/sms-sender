@@ -1,8 +1,9 @@
-import { Geist, Geist_Mono, Noto_Sans, EB_Garamond } from "next/font/google"
+import { EB_Garamond, Geist_Mono, Noto_Sans } from "next/font/google";
 
-import "./globals.css"
-import { ThemeProvider } from "@/components/theme-provider"
+import { ThemeProvider } from "@/components/theme-provider";
+import { ModeToggle } from "@/components/theme-switcher";
 import { cn } from "@/lib/utils";
+import "./globals.css";
 
 const ebGaramondHeading = EB_Garamond({subsets:['latin'],variable:'--font-heading'});
 
@@ -25,7 +26,9 @@ export default function RootLayout({
       className={cn("antialiased", fontMono.variable, "font-sans", notoSans.variable, ebGaramondHeading.variable)}
     >
       <body>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>{children}
+          <ModeToggle/>
+        </ThemeProvider>
       </body>
     </html>
   )
